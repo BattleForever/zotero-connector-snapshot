@@ -5,16 +5,16 @@ const path = require('node:path');
 const vm = require('node:vm');
 const root = path.resolve(__dirname, '..');
 const context = vm.createContext({Zotero:{}});
-vm.runInContext(fs.readFileSync(path.join(root, 'src/translated_snapshot.js'), 'utf8'), context);
-const helper = context.Zotero.TranslatedSnapshot;
+vm.runInContext(fs.readFileSync(path.join(root, 'src/page_snapshot.js'), 'utf8'), context);
+const helper = context.Zotero.PageSnapshot;
 const tests = [
-  ['english', () => assert.equal(helper.attachmentTitle({title:'Acoustic sensor'}), '译文快照 · Acoustic sensor')],
-  ['chinese', () => assert.equal(helper.attachmentTitle({title:'声学传感器研究'}), '译文快照 · 声学传感器研究')],
-  ['blank', () => assert.equal(helper.attachmentTitle({title:' \t '}), '译文快照')],
-  ['missing', () => assert.equal(helper.attachmentTitle(), '译文快照')],
-  ['formatting', () => assert.equal(helper.attachmentTitle({title:'A <i>surface</i>\n wave\u202e tag'}), '译文快照 · A surface wave tag')],
+  ['english', () => assert.equal(helper.attachmentTitle({title:'Acoustic sensor'}), '网页快照 · Acoustic sensor')],
+  ['chinese', () => assert.equal(helper.attachmentTitle({title:'声学传感器研究'}), '网页快照 · 声学传感器研究')],
+  ['blank', () => assert.equal(helper.attachmentTitle({title:' \t '}), '网页快照')],
+  ['missing', () => assert.equal(helper.attachmentTitle(), '网页快照')],
+  ['formatting', () => assert.equal(helper.attachmentTitle({title:'A <i>surface</i>\n wave\u202e tag'}), '网页快照 · A surface wave tag')],
   ['long unicode', () => {
-    const value = helper.attachmentTitle({title:'𠮷'.repeat(121)}).replace('译文快照 · ', '');
+    const value = helper.attachmentTitle({title:'𠮷'.repeat(121)}).replace('网页快照 · ', '');
     assert.equal(Array.from(value).length, 120);
     assert.equal(value, '𠮷'.repeat(119) + '…');
   }],

@@ -62,7 +62,7 @@ def build(base, output):
             raise ValueError('Unsafe lock path')
     output.parent.mkdir(parents=True, exist_ok=True)
     # Preserve failed staging directories for diagnosis; inherit normal Windows ACLs.
-    staging = output.parent / ('.yicun-build-' + uuid.uuid4().hex)
+    staging = output.parent / ('.connector-build-' + uuid.uuid4().hex)
     if staging.resolve().parent != output.parent:
         raise ValueError('Unexpected staging location')
     staging.mkdir()
@@ -82,7 +82,7 @@ def build(base, output):
         staging.rename(output)
     except Exception as error:
         raise ValueError('Build failed; staging retained at ' + staging.name + ': ' + str(error)) from error
-    return {'project': 'YiCun', 'version': custom['version_name'],
+    return {'project': 'Zotero Connector Snapshot', 'version': custom['version_name'],
             'manifest_version': custom['version'], 'base_version': lock['version'],
             'permissions_expanded': False, 'files': hashes}
 

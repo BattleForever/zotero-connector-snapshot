@@ -61,6 +61,7 @@ def main():
         raise AssertionError('Changed input accepted')
     assert not (test_root / 'changed-should-not-exist').exists()
     run('node', 'tests/naming.cjs')
+    run('node', 'tests/page_snapshot.cjs')
     run('node', 'tests/save_boundary.cjs', str(test_root / 'first'))
     run('node', 'tests/feature_parity.cjs', str(test_root / 'first'), str(base))
     run('node', 'tests/injection_guard.cjs', str(test_root / 'first'))

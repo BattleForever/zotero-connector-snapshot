@@ -11,7 +11,7 @@ ROOT_FILES = {'README.md', 'LICENSE', 'NOTICE', '.gitignore', '.gitattributes',
               'baseline.lock.json', 'CHANGELOG.md', 'CONTRIBUTING.md', 'PRIVACY.md', 'SECURITY.md'}
 SOURCE_DIRS = {'src': {'.js'}, 'tools': {'.py'}, 'tests': {'.py', '.cjs'},
                'docs': {'.md'}, 'config': {'.txt'}}
-FIXTURES = ('tests/live_extension.html', 'tests/live_extension.js')
+FIXTURES = ('tests/live_extension.html', 'tests/live_extension.js', 'tests/browser_capture.html', 'tests/browser_capture.js')
 
 
 def public_files():
@@ -26,7 +26,7 @@ def public_files():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--output', type=Path, default=ROOT / 'dist/yicun-0.2.0-rc.1-source.zip')
+    parser.add_argument('--output', type=Path, default=ROOT / 'dist/zotero-connector-snapshot-0.2.0-rc.2-source-reviewed.zip')
     args = parser.parse_args()
     args.output.parent.mkdir(parents=True, exist_ok=True)
     hashes = {}
@@ -36,7 +36,7 @@ def main():
             data = file.read_bytes()
             rel = file.relative_to(ROOT).as_posix()
             hashes[rel] = hashlib.sha256(data).hexdigest()
-            info = zipfile.ZipInfo('yicun/' + rel, date_time=(2026, 10, 26, 0, 0, 0))
+            info = zipfile.ZipInfo('zotero-connector-snapshot/' + rel, date_time=(2026, 10, 26, 0, 0, 0))
             info.compress_type = zipfile.ZIP_DEFLATED
             info.external_attr = 0o644 << 16
             archive.writestr(info, data)

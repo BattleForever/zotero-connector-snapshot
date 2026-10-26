@@ -17,7 +17,7 @@ async function main() {
   vm.runInContext(fs.readFileSync(path.join(extension,'itemSaver.js'),'utf8'),context);
   await test('original_cloud_fallback_is_preserved',async()=>{
     const saver = new context.Zotero.ItemSaver({sessionID:'parity-fixture'});
-    saver._saveToZotero = async()=>{saver._snapshotAttachment={_translatedSnapshot:true};throw {status:0};};
+    saver._saveToZotero = async()=>{saver._snapshotAttachment={_pageSnapshot:true};throw {status:0};};
     saver._saveToServer = async()=>({destination:'original-cloud-fallback'});
     const result = await saver.saveItems([]);
     if(result.destination!=='original-cloud-fallback') throw new Error('Original fallback was removed');

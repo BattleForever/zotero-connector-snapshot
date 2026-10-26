@@ -1,0 +1,16 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>Connector snapshot capture regression</title>
+<style>body{font:16px/1.6 system-ui;background:white;color:#222;margin:24px}article{max-width:900px}.immersive-translate-target-inner{display:block;color:#205080}</style>
+<script>
+window.fixture={calls:[],snapshots:[],pdfs:[],errors:[],progress:[]};
+window.Zotero={isSafari:false,isManifestV3:true,debug:()=>{},logError:e=>fixture.errors.push(e.message),
+ Utilities:{randomString:()=>crypto.randomUUID().slice(0,8),deepCopy:o=>JSON.parse(JSON.stringify(o)),Connector:{throttleAsync:f=>f}},
+ COHTTP:{request:async()=>{throw Error('Unexpected resource');}},Prefs:{getAsync:async()=>({})},Messaging:{sendMessage:()=>{}},
+ Inject:{notify:async()=>{},checkActionToServer:async()=>true},getString:k=>k,ItemTypes:{getImageSrc:k=>k},
+ Connector:{getPref:async()=>true,callMethod:async(method,data)=>{fixture.calls.push({method,data});return {filesEditable:true};},
+ saveSingleFile:async(options,data)=>fixture.snapshots.push(structuredClone(data))}};
+</script>
+<script src="../extension/itemSaver.js"></script><script src="../extension/inject/pageSaving.js"></script>
+<script src="../extension/singlefile.js"></script><script src="../extension/singlefile-config.js"></script>
+<script src="../extension/lib/SingleFile/single-file-bootstrap.js"></script><script src="../extension/lib/SingleFile/single-file.js"></script>
+</head><body><h1>PDF + current-page snapshot regression</h1><article id="article"></article><pre id="result">Running…</pre>
+<script src="browser_capture.js"></script></body></html>
