@@ -1,0 +1,1 @@
+{{ authors max="1" name="family" suffix=" - " }}{{ year suffix=" - " }}{{ title truncate="120" }}

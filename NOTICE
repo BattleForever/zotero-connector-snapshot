@@ -1,0 +1,17 @@
+YiCun / 译存 — unofficial translated-snapshot customization
+Copyright (c) 2026 YiCun contributors.
+SPDX-License-Identifier: AGPL-3.0-or-later
+
+Derived patch operations retain the following upstream attribution:
+Copyright © 2018 Corporation for Digital Scholarship, Vienna, Virginia, USA.
+Copyright © 2011–2017 Roy Rosenzweig Center for History and New Media,
+George Mason University, Fairfax, Virginia, USA.
+Other upstream notices remain in the user's original Connector files.
+
+Source: https://github.com/zotero/zotero-connectors
+Licensing: https://www.zotero.org/support/licensing
+This repository distributes customization source and build tools only.
+It does not redistribute the upstream Chrome package, vendor bundles,
+user libraries, captured articles, translation content, or browser profiles.
+Zotero and Immersive Translate are third-party products. This project is
+independent and is not endorsed by either product's developers.

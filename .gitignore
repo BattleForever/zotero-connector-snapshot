@@ -1,0 +1,17 @@
+/build/
+/dist/
+/upstream/
+/original_*/
+/extension/
+/private/
+__pycache__/
+*.pyc
+*.zip
+*.crx
+*.pem
+.env
+.env.*
+*_results.json
+*_receipt.json
+*_acceptance.json
+.DS_Store
