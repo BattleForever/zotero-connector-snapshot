@@ -11,6 +11,12 @@
     if(message?.type!=='ZTSS_LOCAL_STARTUP_STATUS' || sender.id!==chrome.runtime.id) return;
     sendResponse({version:chrome.runtime.getManifest().version,phase:state.phase,currentScript:state.currentScript,
       imported:state.imported,error:state.error,initialized:!!self.Zotero?.initialized,
-      offscreenInitialized:!!self.Zotero?.OffscreenManager?.offscreenPageInitialized});
+      offscreenInitialized:!!self.Zotero?.OffscreenManager?.offscreenPageInitialized,
+      firstUse:self.Zotero?.initialized ? self.Zotero.Prefs.get('firstUse') : null,
+      online:self.Zotero?.Connector?.isOnline,
+      currentFixture:sender.tab?.url==='http://127.0.0.1:18765/tests/live_extension.html'
+        ? (()=>{const info=self.Zotero?.Connector_Browser?.getTabInfo(sender.tab.id);return {
+          translatorCount:info?.translators?.length,frameId:info?.frameId,
+          uninjectable:info?.uninjectable,isPDF:info?.isPDF};})() : null});
   });
 })();

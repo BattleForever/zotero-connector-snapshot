@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 Zotero.PageSnapshot = {
-	version: '0.2.0-rc.3',
+	version: '0.2.0-rc.4',
 
 	attachmentTitle(item) {
 		// Attachment labels are independent of citation metadata and filesystem names.

@@ -51,6 +51,13 @@ def apply(base, output, manifest):
 \t\t\tattachmentCallback(this._snapshotAttachment, false, e.message)''')
     path.write_text(code, encoding='utf-8', newline='\n')
 
+    # A surviving offscreen document reconnects once, without running cold startup again.
+    path = output / 'offscreen' / 'offscreenSandbox.js'
+    code = (base / 'offscreen' / 'offscreenSandbox.js').read_text(encoding='utf-8')
+    code = replace_once(code, "\t\t\tZotero.debug('OffscreenSandbox: reinitialized');",
+                        "\t\t\tZotero.debug('OffscreenSandbox: reinitialized');\n\t\t\treturn;")
+    path.write_text(code, encoding='utf-8', newline='\n')
+
     path = output / 'inject' / 'pageSaving.js'
     code = (base / 'inject' / 'pageSaving.js').read_text(encoding='utf-8')
     code = replace_once(code, '''\t\t\tZotero.debug(`PageSaving.onTranslate: Reopening popup`);
@@ -89,6 +96,14 @@ def apply(base, output, manifest):
     code = (base / 'background.js').read_text(encoding='utf-8')
     code = replace_once(code, 'if (response && frameId == 0) return deferred.resolve();',
                         'if (response) return deferred.resolve();')
+    # Keep the save promise attached to the original action so failures reach its caller.
+    action_start = code.index('\tasync function _browserAction(tab) {')
+    action_end = code.index('\n\t/**', action_start)
+    action = code[action_start:action_end]
+    action = replace_once(action, 'Zotero.Connector_Browser.saveWithTranslator(tab, 0, {fallbackOnFailure: true});',
+                          'return Zotero.Connector_Browser.saveWithTranslator(tab, 0, {fallbackOnFailure: true});')
+    action = action.replace('Zotero.Connector_Browser.saveAsWebpage(', 'return Zotero.Connector_Browser.saveAsWebpage(')
+    code = code[:action_start] + action + code[action_end:]
     code = replace_once(code, 'Zotero.initGlobal();', '''Zotero.initGlobal().then(() => {
 \tif (self.ZTSS_LOCAL_STARTUP) self.ZTSS_LOCAL_STARTUP.phase = 'ready';
 }).catch(error => {
@@ -152,9 +167,9 @@ Zotero.Messaging.addMessageListener("ping", function () { return 'pong'; });
     custom_manifest.pop('update_url', None)
     custom_manifest['name'] = 'Zotero Connector · PDF 与网页快照'
     custom_manifest['short_name'] = 'Zotero Connector'
-    custom_manifest['version_name'] = '0.2.0-rc.3 (Connector 5.0.217)'
+    custom_manifest['version_name'] = '0.2.0-rc.4 (Connector 5.0.217)'
     custom_manifest.pop('homepage_url', None)
-    custom_manifest['version'] = '5.0.217.5'
+    custom_manifest['version'] = '5.0.217.6'
     custom_manifest['content_scripts'][0]['js'].insert(0, 'local-startup-probe.js')
     custom_manifest['description'] = '保存论文时附加当前页面的网页快照，保留原有文库、分类和 PDF 保存流程。基于 Zotero Connector 的非官方修改版。'
     (output / 'manifest.json').write_text(json.dumps(custom_manifest, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
