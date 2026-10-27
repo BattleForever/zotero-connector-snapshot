@@ -65,6 +65,7 @@ python tools/serve_fixture.py --extension build/extension
 该入口复用实际 ItemSaver 和 SingleFile，使用合成内容及 RPC 记录桩，不写入真实文库。
 检查原文、译文、无翻译标记、空白输出和隐藏输出五类情况。
 实际安装验收见 [验证说明](docs/VALIDATION.md)，实现见 [架构说明](docs/ARCHITECTURE.md)。
+Chrome 扩展页的 CSP 日志与真实保存失败如何区分，见 [故障说明](docs/TROUBLESHOOTING.md)。
 
 ## 许可
 

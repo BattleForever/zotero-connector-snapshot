@@ -4,6 +4,8 @@
 - `tests/page_snapshot.cjs`：原文、译文和短页面可保存；空白、隐藏及地址变化被拒绝。
 - `tests/save_boundary.cjs`：实际 ItemSaver 调用处的新名称、父条目与 PDF 保留、失败后标签恢复。
 - `tests/build_checks.py`：重复构建一致、基线未修改、权限未扩大、原 UI 保留、在线回退与防重复注入。
+- `tests/startup_listener.cjs`：错误日志存储尚未返回时，实际 initGlobal 已注册监听器；提前到达的 HTTP 代理请求等待初始化后收到完整响应。
+- `tests/sandbox_csp.cjs`：删除 meta 中无效的 frame-ancestors，不改变其他有效策略或脚本清单。
 - `tests/browser_capture.html`：在浏览器中使用实际 ItemSaver、SingleFile 和离线渲染检查，验证原文、译文、无翻译标记、空白输出和隐藏输出；RPC 为记录桩，不写入真实文库。
 
 运行 `python tools/serve_fixture.py --extension build/extension`，打开

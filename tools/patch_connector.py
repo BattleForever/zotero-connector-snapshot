@@ -121,6 +121,15 @@ Zotero.Messaging.addMessageListener("ping", function () { return 'pong'; });
 
     path = output / 'zotero.js'
     code = (base / 'zotero.js').read_text(encoding='utf-8')
+    # Chrome can deliver a content-script request while the first storage await is pending.
+    # Register synchronously; receiveMessage already waits on Zotero.initDeferred.promise.
+    init_start = code.index('this.initGlobal = async function() {')
+    init_end = code.index('\n\t};', init_start) + 5
+    init = code[init_start:init_end]
+    init = replace_once(init, '\t\tZotero.Messaging.init();\n', '')
+    init = replace_once(init, 'this.initGlobal = async function() {',
+                        'this.initGlobal = async function() {\n\t\tZotero.Messaging.init();')
+    code = code[:init_start] + init + code[init_end:]
     for old, phase in [('\t\tawait Zotero.Errors.init();', 'error-log-init'),
                        ('\t\tawait Zotero.Prefs.init();', 'preferences-init'),
                        ('\t\tawait Zotero.Connector_Browser.init();', 'offscreen-and-browser-init'),
@@ -132,14 +141,20 @@ Zotero.Messaging.addMessageListener("ping", function () { return 'pong'; });
             code = replace_once(code, old, "\t\tif (global.ZTSS_LOCAL_STARTUP) global.ZTSS_LOCAL_STARTUP.phase = '" + phase + "';\n" + old)
     path.write_text(code, encoding='utf-8', newline='\n')
 
+    # frame-ancestors has no effect in a meta policy. Keep every effective directive.
+    path = output / 'offscreen' / 'offscreenSandbox.html'
+    code = (base / 'offscreen' / 'offscreenSandbox.html').read_text(encoding='utf-8')
+    code = replace_once(code, "form-action 'none'; frame-ancestors 'self';", "form-action 'none';")
+    path.write_text(code, encoding='utf-8', newline='\n')
+
     custom_manifest = dict(manifest)
     custom_manifest.pop('key', None)
     custom_manifest.pop('update_url', None)
     custom_manifest['name'] = 'Zotero Connector · PDF 与网页快照'
     custom_manifest['short_name'] = 'Zotero Connector'
-    custom_manifest['version_name'] = '0.2.0-rc.2 (Connector 5.0.217)'
+    custom_manifest['version_name'] = '0.2.0-rc.3 (Connector 5.0.217)'
     custom_manifest.pop('homepage_url', None)
-    custom_manifest['version'] = '5.0.217.4'
+    custom_manifest['version'] = '5.0.217.5'
     custom_manifest['content_scripts'][0]['js'].insert(0, 'local-startup-probe.js')
     custom_manifest['description'] = '保存论文时附加当前页面的网页快照，保留原有文库、分类和 PDF 保存流程。基于 Zotero Connector 的非官方修改版。'
     (output / 'manifest.json').write_text(json.dumps(custom_manifest, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')

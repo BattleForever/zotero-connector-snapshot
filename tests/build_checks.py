@@ -65,6 +65,8 @@ def main():
     run('node', 'tests/save_boundary.cjs', str(test_root / 'first'))
     run('node', 'tests/feature_parity.cjs', str(test_root / 'first'), str(base))
     run('node', 'tests/injection_guard.cjs', str(test_root / 'first'))
+    run('node', 'tests/startup_listener.cjs', str(test_root / 'first'))
+    run('node', 'tests/sandbox_csp.cjs', str(test_root / 'first'), str(base))
     for file in ('itemSaver.js', 'singlefile.js', 'background.js', 'background-worker.js',
                  'inject/inject.js', 'inject/pageSaving.js', 'local-startup-probe.js'):
         run('node', '--check', str(test_root / 'first' / file))
