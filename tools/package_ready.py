@@ -53,7 +53,7 @@ Python 3.10+ is the only requirement. From this extracted source directory:
     python tools/build_ready.py --base ../upstream-package --output ../rebuilt-ready
 
 `rebuilt-ready/extension` is the loadable extension. The result must match the
-SHA-256 file inventory embedded in the ready ZIP. The build reads only the 286
+SHA-256 file inventory embedded in the ready ZIP. The build reads only the
 locked baseline files and does not download anything or access a Zotero library.
 Our runtime core is rc.9; rc.10 changes manifest metadata and four icon PNGs only.
 The new icon PNGs can be regenerated with tools/make_icons.py (Pillow required
