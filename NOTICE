@@ -8,6 +8,12 @@ Copyright © 2011–2017 Roy Rosenzweig Center for History and New Media,
 George Mason University, Fairfax, Virginia, USA.
 Other upstream notices remain in the user's original Connector files.
 
+The parser compatibility patch includes a small adaptation of SingleFile code.
+Copyright (c) 2010-2022 Gildas Lormeau.
+SingleFile core source: https://github.com/gildas-lormeau/single-file-core
+Its applicable source notices specify GNU AGPL version 3 or any later version.
+The complete third-party bundle is not distributed by this repository.
+
 Source: https://github.com/zotero/zotero-connectors
 Licensing: https://www.zotero.org/support/licensing
 This repository distributes customization source and build tools only.

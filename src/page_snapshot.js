@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 Zotero.PageSnapshot = {
-	version: '0.2.0-rc.4',
+	version: '0.2.0-rc.9',
 
 	attachmentTitle(item) {
 		// Attachment labels are independent of citation metadata and filesystem names.
@@ -71,6 +71,10 @@ Zotero.PageSnapshot = {
 	},
 
 	async checkRendering(saved) {
+		// This is the disposable offline validation copy, not the HTML sent to Zotero.
+		// Embedded resources already use data URLs; a navigation base is unnecessary here
+		// and conflicts with the validator's base-uri 'none' policy.
+		for (const base of saved.querySelectorAll('base')) base.remove();
 		const frame = document.createElement('iframe');
 		frame.setAttribute('sandbox', 'allow-same-origin');
 		frame.setAttribute('aria-hidden', 'true');

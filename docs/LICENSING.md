@@ -11,6 +11,7 @@ AGPL 允许商业使用及收费分发。不能在这个衍生项目上再附加
 
 本仓库只发布修改源码、构建脚本和合成测试。上游 Connector 的完整打包文件、
 SingleFile 等第三方库由使用者自行准备，不随仓库再分发；本地构建保留其原始声明。
+SingleFile 解析器兼容补丁涉及的少量源代码改写已在 NOTICE 中注明来源与版权；其源文件同样允许按 AGPL 第 3 版或后续版本使用。
 若将来发布包含上游打包库的完整扩展，应先核对所有第三方许可并准备对应版本的
 完整对应源码与构建资料，不能仅用本补丁仓库替代这些义务。
 
@@ -24,3 +25,4 @@ Zotero、沉浸式翻译及其图标属于各自权利人。
 - 上游 COPYING：https://github.com/zotero/zotero-connectors/blob/master/COPYING
 - 商标说明：https://www.zotero.org/support/terms/trademark
 - AGPL 正文：https://www.gnu.org/licenses/agpl-3.0.html
+- SingleFile 源码许可声明：https://github.com/gildas-lormeau/single-file-core/blob/main/core/helper.js

@@ -14,6 +14,8 @@
       offscreenInitialized:!!self.Zotero?.OffscreenManager?.offscreenPageInitialized,
       firstUse:self.Zotero?.initialized ? self.Zotero.Prefs.get('firstUse') : null,
       online:self.Zotero?.Connector?.isOnline,
+      delivery:state.delivery || [],
+      lastAction:state.lastAction || null,
       currentFixture:sender.tab?.url==='http://127.0.0.1:18765/tests/live_extension.html'
         ? (()=>{const info=self.Zotero?.Connector_Browser?.getTabInfo(sender.tab.id);return {
           translatorCount:info?.translators?.length,frameId:info?.frameId,

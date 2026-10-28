@@ -68,15 +68,19 @@ def main():
     run('node', 'tests/startup_listener.cjs', str(test_root / 'first'))
     run('node', 'tests/offscreen_reconnect.cjs', str(test_root / 'first'))
     run('node', 'tests/save_action.cjs', str(test_root / 'first'))
+    run('node', 'tests/first_save_ready.cjs', str(test_root / 'first'))
+    run('node', 'tests/context_lifecycle.cjs', str(test_root / 'first'))
+    run('node', 'tests/tab_message_lifecycle.cjs', str(test_root / 'first'))
+    run('node', 'tests/singlefile_base.cjs', str(test_root / 'first'))
     run('node', 'tests/sandbox_csp.cjs', str(test_root / 'first'), str(base))
     for file in ('itemSaver.js', 'singlefile.js', 'background.js', 'background-worker.js',
-                 'inject/inject.js', 'inject/pageSaving.js', 'local-startup-probe.js'):
+                 'inject/inject.js', 'inject/pageSaving.js', 'local-startup-probe.js', 'messaging.js', 'messaging_inject.js'):
         run('node', '--check', str(test_root / 'first' / file))
     result = {'pass': True, 'deterministic_build': True, 'source_unchanged': True,
               'permissions_expanded': False, 'original_picker_unchanged': True,
               'extra_input_excluded': True, 'wrong_version_rejected': True,
               'changed_base_rejected': True, 'existing_output_protected': True,
-              'live_browser_acceptance': 'PENDING_USER_REVIEW'}
+              'live_browser_acceptance': 'NOT_RUN_BY_THIS_SCRIPT'}
     (test_root / 'checks_results.json').write_text(json.dumps(result, indent=2), encoding='utf-8')
     print(json.dumps(result, indent=2))
 

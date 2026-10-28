@@ -10,10 +10,12 @@ function policy(html){return html.match(/<meta http-equiv="Content-Security-Poli
   .split(';').map(x=>x.trim()).filter(Boolean);}
 const effective=policy(original).filter(x=>!x.startsWith('frame-ancestors '));
 assert.ok(!policy(actual).some(x=>x.startsWith('frame-ancestors ')), 'Ignored meta frame-ancestors directive remains');
-assert.deepEqual(policy(actual),effective,'Effective sandbox CSP changed');
+assert.ok(policy(actual).includes("style-src 'unsafe-inline'"),'Parser needs an explicit inline-style data policy');
+assert.deepEqual(policy(actual).filter(x=>!x.startsWith('style-src ')),effective,'A non-style sandbox directive changed');
+assert.equal(policy(actual).filter(x=>x.startsWith('style-src ')).length,1);
 assert.ok(effective.includes("default-src 'none'"));
 assert.ok(effective.includes("script-src 'self' 'unsafe-eval'"));
 assert.ok(effective.includes("form-action 'none'"));
 const scripts=html=>Array.from(html.matchAll(/<script src="([^"]+)"/g),x=>x[1]);
 assert.deepEqual(scripts(actual),scripts(original),'Sandbox script list changed');
-console.log('PASS ignored directive removed; effective CSP and sandbox scripts unchanged');
+console.log('PASS only inline-style parsing enabled; all non-style directives and sandbox scripts unchanged');

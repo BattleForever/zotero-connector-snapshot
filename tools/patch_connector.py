@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# Based on Zotero Connector patch operations. Modified 2026-10-26.
+# Based on Zotero Connector patch operations. Modified 2026-10-27.
 from pathlib import Path
 import json
 import shutil
@@ -51,6 +51,54 @@ def apply(base, output, manifest):
 \t\t\tattachmentCallback(this._snapshotAttachment, false, e.message)''')
     path.write_text(code, encoding='utf-8', newline='\n')
 
+    # Late offscreen callbacks may target a tab that closed during translator detection.
+    # Treat only the browser's explicit missing-tab response as undeliverable, just like
+    # tabs.sendMessage already does. Never fall back to the currently active tab.
+    path = output / 'messaging.js'
+    code = (base / 'messaging.js').read_text(encoding='utf-8')
+    old = "\t\tif (typeof tab === 'number') {\n\t\t\ttab = await browser.tabs.get(tab);\n\t\t}"
+    if code.count(old) != 2:
+        raise ValueError('Unsupported numeric-tab message paths')
+    code = code.replace(old, """\t\tif (typeof tab === 'number') {
+\t\t\ttry { tab = await browser.tabs.get(tab); }
+\t\t\tcatch (error) {
+\t\t\t\tif (/^No tab with id: [0-9]+\\.$/.test(error?.message || '')) return;
+\t\t\t\tthrow error;
+\t\t\t}
+\t\t}
+\t\tif (!tab) return;""")
+    code = replace_once(code, '\tvar _chunkedPayloads = {};',
+                        '\tvar _chunkedPayloads = {};\n' + (ASSETS / 'message_diagnostics.js').read_text(encoding='utf-8'))
+    code = replace_once(code, '\t\t\tresponse = await browser.tabs.sendMessage(tab.id, [messageName, args], options);',
+                        '''\t\t\ttraceDelivery(messageName, 'sent', tab, frameId);
+\t\t\tresponse = await browser.tabs.sendMessage(tab.id, [messageName, args], options);
+\t\t\ttraceDelivery(messageName, 'returned', tab, frameId, response !== undefined);''')
+    path.write_text(code, encoding='utf-8', newline='\n')
+
+    # SingleFile's parser already inherits this document's base URL. Adding an equal
+    # base is redundant, and coercing an absent argument into "undefined" is incorrect.
+    # Keep existing bases and the original behavior for a necessary different base.
+    path = output / 'lib' / 'SingleFile' / 'single-file.js'
+    code = (base / 'lib' / 'SingleFile' / 'single-file.js').read_text(encoding='utf-8')
+    code = replace_once(code, 'return a&&a.getAttribute("href")||(a&&a.remove(),a=t.createElement("base"),a.setAttribute("href",e),t.head.insertBefore(a,t.head.firstChild)),t}',
+                        'return a&&a.getAttribute("href")||!e||e===t.baseURI||(a&&a.remove(),a=t.createElement("base"),a.setAttribute("href",e),t.head.insertBefore(a,t.head.firstChild)),t}')
+    path.write_text(code, encoding='utf-8', newline='\n')
+
+    # Retire content-script RPCs after an extension reload instead of dereferencing
+    # a runtime that Chrome has removed from the old isolated world.
+    path = output / 'messaging_inject.js'
+    code = (base / 'messaging_inject.js').read_text(encoding='utf-8')
+    lifecycle = (ASSETS / 'context_lifecycle.js').read_text(encoding='utf-8')
+    code = replace_once(code, '\tvar _messageListeners = {};', '\tvar _messageListeners = {};\n' + lifecycle)
+    code = replace_once(code, 'return browser.runtime.sendMessage([messageName, newArgs]).then(',
+                        'return sendToBackground([messageName, newArgs]).then(')
+    code = replace_once(code, '\t\t\t\t\t\t}, function(e) {', '''\t\t\t\t\t\t}, function(e) {
+\t\t\t\t\t\t\tif (contextCancellations.has(e)) {
+\t\t\t\t\t\t\t\tif (messageConfig && messageConfig.response !== false) throw e;
+\t\t\t\t\t\t\t\treturn;
+\t\t\t\t\t\t\t}''')
+    path.write_text(code, encoding='utf-8', newline='\n')
+
     # A surviving offscreen document reconnects once, without running cold startup again.
     path = output / 'offscreen' / 'offscreenSandbox.js'
     code = (base / 'offscreen' / 'offscreenSandbox.js').read_text(encoding='utf-8')
@@ -96,10 +144,18 @@ def apply(base, output, manifest):
     code = (base / 'background.js').read_text(encoding='utf-8')
     code = replace_once(code, 'if (response && frameId == 0) return deferred.resolve();',
                         'if (response) return deferred.resolve();')
+    ready_helper=(ASSETS/'page_ready.js').read_text(encoding='utf-8')
+    code = replace_once(code, '\tasync function _ensureScriptsInjected(tab) {\n\t\tif (!Zotero.isSafari) return true;\n\t\tawait Zotero.Connector_Browser.injectTranslationScripts(tab);',
+                        ready_helper+'''\n\tasync function _ensureScriptsInjected(tab) {
+\t\tif (!Zotero.isSafari && !Zotero.isChromium) return true;
+\t\tif (Zotero.isSafari) await Zotero.Connector_Browser.injectTranslationScripts(tab);
+\t\telse if (!await _waitForPageScripts(tab)) return true;''')
     # Keep the save promise attached to the original action so failures reach its caller.
     action_start = code.index('\tasync function _browserAction(tab) {')
     action_end = code.index('\n\t/**', action_start)
     action = code[action_start:action_end]
+    action = replace_once(action, '\tasync function _browserAction(tab) {', '''\tasync function _browserAction(tab) {
+\t\tif (self.ZTSS_LOCAL_STARTUP) self.ZTSS_LOCAL_STARTUP.lastAction = {tabId:tab.id, time:Date.now()};''')
     action = replace_once(action, 'Zotero.Connector_Browser.saveWithTranslator(tab, 0, {fallbackOnFailure: true});',
                           'return Zotero.Connector_Browser.saveWithTranslator(tab, 0, {fallbackOnFailure: true});')
     action = action.replace('Zotero.Connector_Browser.saveAsWebpage(', 'return Zotero.Connector_Browser.saveAsWebpage(')
@@ -123,6 +179,15 @@ def apply(base, output, manifest):
 Zotero.Messaging.addMessageListener("ping", function () { return 'pong'; });
 
 ''' + marker)
+    code = replace_once(code, 'return Zotero.PageSaving.onPageLoad(e.persisted);',
+                        'return Zotero.PageSaving.onPageLoad(e.persisted).then(() => Zotero.Inject._readyDeferred.resolve(true));')
+    code = replace_once(code, 'return Zotero.PageSaving.onPageLoad();',
+                        'return Zotero.PageSaving.onPageLoad().then(() => Zotero.Inject._readyDeferred.resolve(true));')
+    code = replace_once(code, '// Wait until pages in prerender state become visible before injecting', '''// First-save readiness includes listener registration and initial translator detection.
+Zotero.Inject._readyDeferred = Zotero.Promise.defer();
+Zotero.Messaging.addMessageListener("connectorReady", () => Zotero.Inject._readyDeferred.promise);
+
+// Wait until pages in prerender state become visible before injecting''')
     path.write_text(code, encoding='utf-8', newline='\n')
 
     for filename in ('local-startup-diagnostics.js', 'local-startup-probe.js'):
@@ -156,10 +221,11 @@ Zotero.Messaging.addMessageListener("ping", function () { return 'pong'; });
             code = replace_once(code, old, "\t\tif (global.ZTSS_LOCAL_STARTUP) global.ZTSS_LOCAL_STARTUP.phase = '" + phase + "';\n" + old)
     path.write_text(code, encoding='utf-8', newline='\n')
 
-    # frame-ancestors has no effect in a meta policy. Keep every effective directive.
+    # Parse inline CSS as document data. Every network/script/form restriction stays intact.
+    # No URL source is allowed by style-src, so external CSS remains blocked.
     path = output / 'offscreen' / 'offscreenSandbox.html'
     code = (base / 'offscreen' / 'offscreenSandbox.html').read_text(encoding='utf-8')
-    code = replace_once(code, "form-action 'none'; frame-ancestors 'self';", "form-action 'none';")
+    code = replace_once(code, "form-action 'none'; frame-ancestors 'self';", "style-src 'unsafe-inline'; form-action 'none';")
     path.write_text(code, encoding='utf-8', newline='\n')
 
     custom_manifest = dict(manifest)
@@ -167,9 +233,9 @@ Zotero.Messaging.addMessageListener("ping", function () { return 'pong'; });
     custom_manifest.pop('update_url', None)
     custom_manifest['name'] = 'Zotero Connector · PDF 与网页快照'
     custom_manifest['short_name'] = 'Zotero Connector'
-    custom_manifest['version_name'] = '0.2.0-rc.4 (Connector 5.0.217)'
+    custom_manifest['version_name'] = '0.2.0-rc.9 (Connector 5.0.217)'
     custom_manifest.pop('homepage_url', None)
-    custom_manifest['version'] = '5.0.217.6'
+    custom_manifest['version'] = '5.0.217.11'
     custom_manifest['content_scripts'][0]['js'].insert(0, 'local-startup-probe.js')
     custom_manifest['description'] = '保存论文时附加当前页面的网页快照，保留原有文库、分类和 PDF 保存流程。基于 Zotero Connector 的非官方修改版。'
     (output / 'manifest.json').write_text(json.dumps(custom_manifest, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')

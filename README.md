@@ -6,6 +6,9 @@
 沿用原版弹窗选择文库和分类，PDF 与网页快照附在同一个文献条目下。
 未翻译时保存原文网页，已翻译时保存当前译文页面，**不检测或强制要求翻译**。
 
+当前预发布版本：**0.2.0-rc.9**（扩展数字版本 **5.0.217.11**）。
+本仓库发布源码补丁与构建工具，不是 Zotero 官方发行版，也不是可直接加载的完整扩展包。
+
 ## 名称与文件名
 
 | 对象 | 规则 |
@@ -21,6 +24,7 @@ PDF 磁盘名称由 Zotero 桌面端决定，见 [命名规则](docs/NAMING.md)�
 
 仓库只包含补丁源码和构建工具，不附带上游打包库或个人论文。
 需要 Python 3.10+；构建不下载依赖、不访问网络、不写入文库。
+下载源码 ZIP 后，不能直接把仓库根目录作为 Chrome 扩展加载：需先构建，加载生成的 `build/extension`，该目录才包含 `manifest.json`。
 
 1. 准备官方 **5.0.217** Chrome Connector 的完整解压目录，不使用修改版作为输入。
 2. 运行以下命令，替换示例路径：
@@ -34,6 +38,7 @@ python tools/build.py --base "PATH_TO_OFFICIAL_5.0.217" --output build/extension
 
 输入逐一核对 `baseline.lock.json`，版本或内容不符时停止；输出目录必须不存在。
 不覆盖商店文件或已加载插件，不提供自动升级；上游更新后需重新适配。
+当前构建仅接受这份锁定的官方 5.0.217 打包版本，不适用于任意新版 Connector 或直接检出的上游源码目录。
 
 ## 保存行为
 
@@ -53,6 +58,8 @@ python tools/build.py --base "PATH_TO_OFFICIAL_5.0.217" --output build/extension
 SingleFile 仍可能请求网页引用的图片、样式和字体。
 
 ## 验证
+
+运行自动检查还需要 Node.js 18+；实际浏览器验收需 Chrome 与 Zotero 桌面端。
 
 ```powershell
 node tests/naming.cjs

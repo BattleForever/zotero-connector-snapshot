@@ -16,7 +16,7 @@ assert.ok(start>=0 && end>start);
       Connector_Browser:{getTabInfo:()=>({translators:mode==='translator'?[{}]:[],isPDF:mode==='pdf'}),
         saveWithTranslator:(...args)=>{called=args;return save;},
         saveAsWebpage:(...args)=>{called=args;return save;}}};
-    const context=vm.createContext({Zotero,_ensureScriptsInjected:async()=>true,_isBetaBuildBeyondExpiration:false});
+    const context=vm.createContext({Zotero,self:{},_ensureScriptsInjected:async()=>true,_isBetaBuildBeyondExpiration:false});
     const action=vm.runInContext('('+source.slice(start,end).trim()+')',context);
     const result=action(tab).then(value=>{settled=true;return value;});
     for(let tick=0;tick<8;tick++) await Promise.resolve();
