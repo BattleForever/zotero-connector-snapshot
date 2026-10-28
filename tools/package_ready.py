@@ -55,7 +55,8 @@ Python 3.10+ is the only requirement. From this extracted source directory:
 `rebuilt-ready/extension` is the loadable extension. The result must match the
 SHA-256 file inventory embedded in the ready ZIP. The build reads only the
 locked baseline files and does not download anything or access a Zotero library.
-Our runtime core is rc.9; rc.10 changes manifest metadata and four icon PNGs only.
+Our runtime core is rc.9; the ready packaging changes manifest metadata and
+four icon PNGs only. Later guide revisions do not change runtime logic.
 The new icon PNGs can be regenerated with tools/make_icons.py (Pillow required
 only for regenerating artwork, not for building or installing the extension).
 

@@ -7,8 +7,8 @@ import shutil
 
 from build import ROOT,build,digest,verify_output
 
-VERSION='0.2.0-rc.10'
-NUMERIC_VERSION='5.0.217.12'
+VERSION='0.2.0-rc.11'
+NUMERIC_VERSION='5.0.217.13'
 SOURCE_URL='https://github.com/BattleForever/zotero-connector-snapshot/releases/download/v'+VERSION+'/zotero-snapshot-v'+VERSION+'-corresponding-source.zip'
 
 def build_ready(base,output):

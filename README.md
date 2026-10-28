@@ -4,22 +4,22 @@
 
 这是基于 **Zotero Connector 5.0.217** 的非官方修改版，目前支持 Chrome。
 沿用原版弹窗选择文库和分类，PDF 与网页快照附在同一个文献条目下。
-未翻译时保存原文网页，已翻译时保存当前译文页面，**不检测或强制要求翻译**。
+网页快照保留浏览器当前已显示的页面内容。
 
-当前预发布版本：**0.2.0-rc.10**（扩展数字版本 **5.0.217.12**）。
+当前预发布版本：**0.2.0-rc.11**（扩展数字版本 **5.0.217.13**）。
 提供已经构建好的安装包，无需 Python、Node.js 或构建命令。仍属预发布版本，建议先保存一篇论文核对附件。
 
 ## 三步开始使用
 
-1. **[下载安装包 ready.zip](https://github.com/BattleForever/zotero-connector-snapshot/releases/download/v0.2.0-rc.10/zotero-snapshot-v0.2.0-rc.10-ready.zip)**，完整解压到准备长期保留的位置，双击 **先看这里.html**。
+1. **[下载安装包 ready.zip](https://github.com/BattleForever/zotero-connector-snapshot/releases/download/v0.2.0-rc.11/zotero-snapshot-v0.2.0-rc.11-ready.zip)**，完整解压到准备长期保留的位置，双击 **先看这里.html**。
 2. 在 Chrome 地址栏输入 `chrome://extensions`，打开“开发者模式”，点“加载已解压的扩展程序”，选择解压后的 **extension** 文件夹。该文件夹内应有 `manifest.json`。
-3. 打开 Zotero 桌面端，将新插件固定到工具栏，打开论文网页，点击插件，在原保存弹窗里选择文库或分类。需要译文时，先翻译，再保存。
+3. 打开 Zotero 桌面端，将新插件固定到工具栏，打开论文网页，点击插件，在原保存弹窗里选择文库或分类。
 
 已装其他 Connector 时，只启用一份，旧版可停用保留。首次安装或更新后刷新论文页。
 安装文件夹不要删除或移动。详细步骤和常见问题见 [快速上手](docs/QUICK_START.md)。
-**rc.9 已使用正常的用户无需为这次包装更新重装。** rc.10 的运行代码与验收过的 rc.9 一致，只更换名称、图标及安装说明。
+**rc.9 已使用正常的用户无需为这次包装更新重装。** 安装包运行代码与验收过的 rc.9 一致，只更换名称、图标及安装说明。
 
-安装包在 [Release 页面](https://github.com/BattleForever/zotero-connector-snapshot/releases/tag/v0.2.0-rc.10) 的 Assets 中。
+安装包在 [Release 页面](https://github.com/BattleForever/zotero-connector-snapshot/releases/tag/v0.2.0-rc.11) 的 Assets 中。
 不要把 GitHub 自动生成的“Source code”压缩包当成安装包。
 开发者可下载同页的 **corresponding-source.zip**；其中包含完整对应源码、上游固定版本、依赖源码、许可与离线重建材料。
 
@@ -58,7 +58,7 @@ python tools/build_ready.py --base ../upstream-package --output ../rebuilt-ready
 python tools/build.py --base "PATH_TO_OFFICIAL_5.0.217" --output build/extension
 ```
 
-3. 加载生成的 `build/extension`。这个底层构建保留 rc.9 核心元数据；生成 rc.10 安装包请使用 `build_ready.py`。
+3. 加载生成的 `build/extension`。这个底层构建保留 rc.9 核心元数据；生成当前安装包请使用 `build_ready.py`。
 4. 固定本修改版到工具栏，刷新论文页后保存。只启用一份 Connector。
 
 输入逐一核对 `baseline.lock.json`，版本或内容不符时停止；输出目录必须不存在。
