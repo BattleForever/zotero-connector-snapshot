@@ -3,3 +3,5 @@
 *.js text eol=lf
 *.cjs text eol=lf
 *.md text eol=lf
+# Preserve upstream license/comment formatting, including blank comment lines.
+licenses/* -whitespace
