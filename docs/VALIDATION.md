@@ -1,5 +1,8 @@
 # 验证范围
 
+- `tests/quickstart_path.cjs`：安装引导页的 Windows、中文/空格、macOS/Linux 路径与 HTTP 预览回退。
+- `tests/ready_package.py`：可加载目录、元数据、主图标尺寸、许可文件、权限及运行代码与 rc.9 一致。
+- `tests/release_archives.py`：直接从发布源码包提取项目及基线，在含中文和空格的新目录离线重建，并与安装 ZIP 全部文件逐一比较；同时检查固定上游源码及依赖归档。
 - `tests/naming.cjs`：附件题名、中英文、控制字符、长文本和 Unicode 字符。
 - `tests/page_snapshot.cjs`：原文、译文和短页面可保存；空白、隐藏及地址变化被拒绝。
 - `tests/save_boundary.cjs`：实际 ItemSaver 调用处的新名称、父条目与 PDF 保留、失败后标签恢复。
@@ -52,6 +55,11 @@ python tools/serve_singlefile_base_test.py --extension build/extension --output 
 同一用例在原捆绑实现上出现当前地址与 undefined 的 base-uri 报告。测试只服务合成内容，不写入文库。
 
 ## 当前实测范围
+
+rc.10 是安装包装更新。原核心自动回归继续通过；新增安装路径与包装检查通过。
+中文离线引导页在 Chrome 的本机 HTTP 预览中核对排版，地址复制按钮显示成功。
+安装包与源码包另做源码单独提取的离线重建及逐文件校验，记录保留在维护者本机。
+本轮未重载或替换使用者正在使用的 rc.9，也未新增真实文献保存试验；功能依据是代码逐文件相同及以下 rc.9 验收。
 
 2026-10-27，rc.9 在真实 MDPI 论文页完成重载、刷新、清除旧错误后首次保存。
 使用者确认原弹窗和分类选择正常、无新增所测 base-uri 报告；随后只读核验新增 PDF 和网页快照属于同一父条目，PDF 文件头与快照版本标记正确。

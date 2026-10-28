@@ -1,4 +1,4 @@
-# Zotero Connector · PDF 与网页快照
+# 网页快照助手 · 适用于 Zotero Connector
 
 保存论文时，同时保存 PDF 和浏览器当前显示的网页。
 
@@ -6,25 +6,50 @@
 沿用原版弹窗选择文库和分类，PDF 与网页快照附在同一个文献条目下。
 未翻译时保存原文网页，已翻译时保存当前译文页面，**不检测或强制要求翻译**。
 
-当前预发布版本：**0.2.0-rc.9**（扩展数字版本 **5.0.217.11**）。
-本仓库发布源码补丁与构建工具，不是 Zotero 官方发行版，也不是可直接加载的完整扩展包。
+当前预发布版本：**0.2.0-rc.10**（扩展数字版本 **5.0.217.12**）。
+提供已经构建好的安装包，无需 Python、Node.js 或构建命令。仍属预发布版本，建议先保存一篇论文核对附件。
+
+## 三步开始使用
+
+1. **[下载安装包 ready.zip](https://github.com/BattleForever/zotero-connector-snapshot/releases/download/v0.2.0-rc.10/zotero-snapshot-v0.2.0-rc.10-ready.zip)**，完整解压到准备长期保留的位置，双击 **先看这里.html**。
+2. 在 Chrome 地址栏输入 `chrome://extensions`，打开“开发者模式”，点“加载已解压的扩展程序”，选择解压后的 **extension** 文件夹。该文件夹内应有 `manifest.json`。
+3. 打开 Zotero 桌面端，将新插件固定到工具栏，打开论文网页，点击插件，在原保存弹窗里选择文库或分类。需要译文时，先翻译，再保存。
+
+已装其他 Connector 时，只启用一份，旧版可停用保留。首次安装或更新后刷新论文页。
+安装文件夹不要删除或移动。详细步骤和常见问题见 [快速上手](docs/QUICK_START.md)。
+**rc.9 已使用正常的用户无需为这次包装更新重装。** rc.10 的运行代码与验收过的 rc.9 一致，只更换名称、图标及安装说明。
+
+安装包在 [Release 页面](https://github.com/BattleForever/zotero-connector-snapshot/releases/tag/v0.2.0-rc.10) 的 Assets 中。
+不要把 GitHub 自动生成的“Source code”压缩包当成安装包。
+开发者可下载同页的 **corresponding-source.zip**；其中包含完整对应源码、上游固定版本、依赖源码、许可与离线重建材料。
+
+Windows/macOS 的普通一键安装需要另行发布到 Chrome Web Store；本项目当前使用 Chrome 官方支持的手动加载方式。
+参见 [Chrome 加载说明](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked) 和 [分发方式](https://developer.chrome.com/docs/extensions/how-to/distribute)。
 
 ## 名称与文件名
 
 | 对象 | 规则 |
 | --- | --- |
-| 扩展 | Zotero Connector · PDF 与网页快照 |
+| 扩展 | 网页快照助手 · 适用于 Zotero Connector（非官方） |
 | 论文题录 | 保留原始题名，供检索与引用 |
 | 网页附件 | 网页快照 · 论文题名（题名最多 120 个 Unicode 字符） |
 | PDF 文件 | 第一作者 - 年份 - 论文题名.pdf（使用 Zotero 原生命名模板） |
 
 PDF 磁盘名称由 Zotero 桌面端决定，见 [命名规则](docs/NAMING.md)。不会批量更改已有文献。
 
-## 构建和安装
+## 开发者构建
 
-仓库只包含补丁源码和构建工具，不附带上游打包库或个人论文。
-需要 Python 3.10+；构建不下载依赖、不访问网络、不写入文库。
-下载源码 ZIP 后，不能直接把仓库根目录作为 Chrome 扩展加载：需先构建，加载生成的 `build/extension`，该目录才包含 `manifest.json`。
+普通用户使用上面的安装包即可。以下步骤仅用于修改源码或复现构建。
+完整对应源码包内包含已经校验的官方基线及上游源码；仓库 Git 主分支保存本项目修改和工具。
+需要 Python 3.10+；离线定制构建不下载依赖、不访问网络、不写入文库。
+在对应源码包的 `project` 文件夹运行：
+
+```powershell
+python tools/build_ready.py --base ../upstream-package --output ../rebuilt-ready
+```
+
+加载生成的 `rebuilt-ready/extension`。完整来源和上游构建路线见包内 `REBUILD.md`。
+如自行提供官方打包基线，原核心补丁构建仍可使用：
 
 1. 准备官方 **5.0.217** Chrome Connector 的完整解压目录，不使用修改版作为输入。
 2. 运行以下命令，替换示例路径：
@@ -33,7 +58,7 @@ PDF 磁盘名称由 Zotero 桌面端决定，见 [命名规则](docs/NAMING.md)�
 python tools/build.py --base "PATH_TO_OFFICIAL_5.0.217" --output build/extension
 ```
 
-3. 在 Chrome 扩展管理页保留但停用原版，启用开发者模式，加载 `build/extension`。
+3. 加载生成的 `build/extension`。这个底层构建保留 rc.9 核心元数据；生成 rc.10 安装包请使用 `build_ready.py`。
 4. 固定本修改版到工具栏，刷新论文页后保存。只启用一份 Connector。
 
 输入逐一核对 `baseline.lock.json`，版本或内容不符时停止；输出目录必须不存在。
@@ -64,7 +89,9 @@ SingleFile 仍可能请求网页引用的图片、样式和字体。
 ```powershell
 node tests/naming.cjs
 node tests/page_snapshot.cjs
+node tests/quickstart_path.cjs
 python tests/build_checks.py --base "PATH_TO_OFFICIAL_5.0.217"
+python tests/ready_package.py --base "PATH_TO_OFFICIAL_5.0.217"
 python tools/serve_fixture.py --extension build/extension
 ```
 
@@ -77,6 +104,7 @@ Chrome 扩展页的 CSP 日志与真实保存失败如何区分，见 [故障说
 ## 许可
 
 修改源码和工具使用 **AGPL-3.0-or-later**，保留上游版权及第三方声明。
+安装包内的 `LICENSES` 提供完整声明及对应源码地址；对应源码包与安装包同时发布，免费获取。
 允许商业使用；分发衍生程序或提供适用的修改版网络服务时，须履行源码义务。
 本项目不是 Zotero 官方发行版，源码许可不赋予商标权，也不改变论文和译文的版权。
 详见 [LICENSE](LICENSE)、[NOTICE](NOTICE)、[许可说明](docs/LICENSING.md) 和 [隐私说明](PRIVACY.md)。

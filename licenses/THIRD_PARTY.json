@@ -1,0 +1,123 @@
+[
+  {
+    "name": "bluebird",
+    "version": "3.7.2",
+    "license": "MIT",
+    "source": "https://registry.npmjs.org/bluebird/-/bluebird-3.7.2.tgz",
+    "source_sha256": "c68b0b2a44f58961277e975053c6f0053d93bac8f68cef9dae596f2a04806ddc",
+    "license_files": [
+      "bluebird-3.7.2-LICENSE.txt"
+    ]
+  },
+  {
+    "name": "dompurify",
+    "version": "3.2.5",
+    "license": "(MPL-2.0 OR Apache-2.0)",
+    "source": "https://registry.npmjs.org/dompurify/-/dompurify-3.2.5.tgz",
+    "source_sha256": "cac911c622cb3d4f1938530d2a7d26880f402bd5c14af58a18db1f31a1c3acd5",
+    "license_files": [
+      "dompurify-3.2.5-LICENSE.txt"
+    ]
+  },
+  {
+    "name": "js-tokens",
+    "version": "3.0.2",
+    "license": "MIT",
+    "source": "https://registry.npmjs.org/js-tokens/-/js-tokens-3.0.2.tgz",
+    "source_sha256": "85ce7a76734264e093bcb1dbbe6d4d4130ee0a7fa562e7608693ee8c3c197d19",
+    "license_files": [
+      "js-tokens-3.0.2-LICENSE.txt"
+    ]
+  },
+  {
+    "name": "loose-envify",
+    "version": "1.3.1",
+    "license": "MIT",
+    "source": "https://registry.npmjs.org/loose-envify/-/loose-envify-1.3.1.tgz",
+    "source_sha256": "fb526ac195ab33e34c3a5fc5a4f68ae865de3310209191c2f5ab56d9631ce088",
+    "license_files": [
+      "loose-envify-1.3.1-LICENSE.txt"
+    ]
+  },
+  {
+    "name": "object-assign",
+    "version": "4.1.1",
+    "license": "MIT",
+    "source": "https://registry.npmjs.org/object-assign/-/object-assign-4.1.1.tgz",
+    "source_sha256": "782d726a263ba7b26cced612af97b80035516df4b0cd788524e7b2cebc4e29ed",
+    "license_files": [
+      "object-assign-4.1.1-license.txt"
+    ]
+  },
+  {
+    "name": "prop-types",
+    "version": "15.6.2",
+    "license": "MIT",
+    "source": "https://registry.npmjs.org/prop-types/-/prop-types-15.6.2.tgz",
+    "source_sha256": "7b496d78f395974492e363c054e34337c4e98b57f932e444ccaf0b7abdfc7cf1",
+    "license_files": [
+      "prop-types-15.6.2-LICENSE.txt"
+    ]
+  },
+  {
+    "name": "react",
+    "version": "16.13.1",
+    "license": "MIT",
+    "source": "https://registry.npmjs.org/react/-/react-16.13.1.tgz",
+    "source_sha256": "136e3e571b6f2c26c988d35996ac09da6ec45085f4d769427db9a86148ac5fb7",
+    "license_files": [
+      "react-16.13.1-LICENSE.txt"
+    ]
+  },
+  {
+    "name": "react-dom",
+    "version": "16.13.1",
+    "license": "MIT",
+    "source": "https://registry.npmjs.org/react-dom/-/react-dom-16.13.1.tgz",
+    "source_sha256": "1ae9d16c5c82128054731e02dd358d4a0aa35e492a562c34a938ad6817f2ff18",
+    "license_files": [
+      "react-dom-16.13.1-LICENSE.txt"
+    ]
+  },
+  {
+    "name": "react-dom-factories",
+    "version": "1.0.2",
+    "license": "MIT",
+    "source": "https://registry.npmjs.org/react-dom-factories/-/react-dom-factories-1.0.2.tgz",
+    "source_sha256": "7bb7d1810f449ee336cdd4b4dac310cab4d7e9f08df12df127caaf98b463b875",
+    "license_files": [
+      "react-dom-factories-1.0.2-LICENSE.txt"
+    ]
+  },
+  {
+    "name": "scheduler",
+    "version": "0.19.1",
+    "license": "MIT",
+    "source": "https://registry.npmjs.org/scheduler/-/scheduler-0.19.1.tgz",
+    "source_sha256": "9e765924c0f15e0c9413ed8015b3cd176ecacb2deecc9b2cabf62ee59b7b31e9",
+    "license_files": [
+      "scheduler-0.19.1-LICENSE.txt"
+    ]
+  },
+  {
+    "name": "single-file-core",
+    "version": "1.5.98",
+    "license": "AGPL-3.0-or-later",
+    "source": "https://registry.npmjs.org/single-file-core/-/single-file-core-1.5.98.tgz",
+    "source_sha256": "a0054d35a95bf536c0d3709ab93ac7eb01d3e60515e20f0c8d5e0b330bb42dfe",
+    "license_files": [
+      "single-file-core-1.5.98-LICENSE.txt"
+    ]
+  },
+  {
+    "name": "webextension-polyfill (Zotero-adapted)",
+    "version": "0.1.1",
+    "license": "MPL-2.0",
+    "source": "https://github.com/zotero/zotero-connectors/tree/5.0.217/src/browserExt",
+    "license_files": [
+      "MPL-2.0.txt"
+    ],
+    "license_url": "https://raw.githubusercontent.com/mozilla/webextension-polyfill/master/LICENSE",
+    "license_sha256": "1f256ecad192880510e84ad60474eab7589218784b9a50bc7ceee34c2b91f1d5"
+  }
+]

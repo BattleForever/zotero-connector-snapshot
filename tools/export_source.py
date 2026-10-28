@@ -10,7 +10,8 @@ ROOT = Path(__file__).resolve().parents[1]
 ROOT_FILES = {'README.md', 'LICENSE', 'NOTICE', '.gitignore', '.gitattributes',
               'baseline.lock.json', 'CHANGELOG.md', 'CONTRIBUTING.md', 'PRIVACY.md', 'SECURITY.md'}
 SOURCE_DIRS = {'src': {'.js'}, 'tools': {'.py'}, 'tests': {'.py', '.cjs'},
-               'docs': {'.md'}, 'config': {'.txt'}}
+               'docs': {'.md'}, 'config': {'.txt'}, 'assets': {'.png','.svg','.html'},
+               'licenses': {'.txt','.json'}}
 FIXTURES = ('tests/live_extension.html', 'tests/live_extension.js', 'tests/browser_capture.html', 'tests/browser_capture.js', 'tests/csp_browser.html', 'tests/csp_browser.js', 'tests/snapshot_rendering.html', 'tests/snapshot_rendering.js', 'tests/singlefile_base_browser.html', 'tests/singlefile_base_browser.js')
 
 
@@ -26,7 +27,7 @@ def public_files():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--output', type=Path, default=ROOT / 'dist/zotero-connector-snapshot-0.2.0-rc.9-source-reviewed.zip')
+    parser.add_argument('--output', type=Path, default=ROOT / 'dist/zotero-connector-snapshot-0.2.0-rc.10-project-source.zip')
     args = parser.parse_args()
     args.output.parent.mkdir(parents=True, exist_ok=True)
     hashes = {}

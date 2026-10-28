@@ -1,4 +1,4 @@
-Zotero Connector · PDF 与网页快照 — unofficial customization
+Webpage Snapshot Helper for Zotero Connector — unofficial customization
 Copyright (c) 2026 Project contributors.
 SPDX-License-Identifier: AGPL-3.0-or-later
 
@@ -6,18 +6,24 @@ Derived patch operations retain the following upstream attribution:
 Copyright © 2018 Corporation for Digital Scholarship, Vienna, Virginia, USA.
 Copyright © 2011–2017 Roy Rosenzweig Center for History and New Media,
 George Mason University, Fairfax, Virginia, USA.
-Other upstream notices remain in the user's original Connector files.
+Other upstream notices remain in the distributed Connector files and sources.
 
 The parser compatibility patch includes a small adaptation of SingleFile code.
 Copyright (c) 2010-2022 Gildas Lormeau.
 SingleFile core source: https://github.com/gildas-lormeau/single-file-core
 Its applicable source notices specify GNU AGPL version 3 or any later version.
-The complete third-party bundle is not distributed by this repository.
+Third-party source distributions and notices accompany the ready release.
 
 Source: https://github.com/zotero/zotero-connectors
 Licensing: https://www.zotero.org/support/licensing
-This repository distributes customization source and build tools only.
-It does not redistribute the upstream Chrome package, vendor bundles,
-user libraries, captured articles, translation content, or browser profiles.
+The Git repository contains our customization source, build tools, original
+artwork, guide and notices. Ready release assets also contain the patched
+upstream Chrome package and vendor code. A complete corresponding source
+archive is provided alongside each ready package, including upstream source,
+fixed submodules, dependency sources and exact offline build inputs.
+See licenses/THIRD_PARTY.json and the release's SOURCE_PROVENANCE.json.
+No user library, captured article, translation content or browser profile
+is included. The new main icon is original project artwork; upstream UI
+assets and their attribution are retained inside the compatibility code.
 Zotero and Immersive Translate are third-party products. This project is
 independent and is not endorsed by either product's developers.
