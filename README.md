@@ -1,4 +1,4 @@
-# 网页快照助手 · 适用于 Zotero Connector
+# Zotero 双存助手
 
 保存论文时，同时保存 PDF 和浏览器当前显示的网页，沿用原有的文库、分类和标签功能。
 
@@ -6,11 +6,11 @@
 
 ## 下载与安装
 
-**[下载安装包 ready.zip](https://github.com/BattleForever/zotero-connector-snapshot/releases/download/v0.2.0/zotero-snapshot-v0.2.0-ready.zip)**（约 1.3 MB）
+**[下载安装包 ready.zip](https://github.com/BattleForever/zotero-connector-snapshot/releases/download/v0.2.1/zotero-snapshot-v0.2.1-ready.zip)**（约 1.3 MB）
 
 1. **完整解压**到准备长期保留的位置，双击 **先看这里.html**。
 2. 在 **Chrome 地址栏**输入 `chrome://extensions`，打开“开发者模式”，点击“加载已解压的扩展程序”，选择解压后的 **extension** 文件夹。安装后可将扩展固定到 **Chrome 工具栏**。
-3. **保持 Zotero 桌面端打开，回到 Chrome 的论文网页，点击 Chrome 工具栏中的“网页快照助手”图标**，在弹窗中选择文库或分类。
+3. **保持 Zotero 桌面端打开，回到 Chrome 的论文网页，点击 Chrome 工具栏中的“Zotero 双存助手”图标**，在弹窗中选择文库或分类。
 
 已安装其他 Connector 时，只启用一份，旧版可停用保留。安装文件夹不要删除或移动；首次安装或更新后刷新论文页。
 

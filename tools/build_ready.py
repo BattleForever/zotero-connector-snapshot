@@ -7,8 +7,8 @@ import shutil
 
 from build import ROOT,build,digest,verify_output
 
-VERSION='0.2.0'
-NUMERIC_VERSION='5.0.217.15'
+VERSION='0.2.1'
+NUMERIC_VERSION='5.0.217.16'
 SOURCE_URL='https://github.com/BattleForever/zotero-connector-snapshot/releases/download/v'+VERSION+'/zotero-snapshot-v'+VERSION+'-corresponding-source.zip'
 
 def build_ready(base,output):
@@ -20,7 +20,7 @@ def build_ready(base,output):
     path=output/'extension/manifest.json'
     manifest=json.loads(path.read_text(encoding='utf-8'))
     original=json.loads((Path(base)/'manifest.json').read_text(encoding='utf-8'))
-    manifest.update(name='网页快照助手 · 适用于 Zotero Connector',short_name='网页快照助手',version=NUMERIC_VERSION,
+    manifest.update(name='Zotero 双存助手',short_name='Zotero 双存助手',version=NUMERIC_VERSION,
         version_name=VERSION+' (Connector 5.0.217)',
         description='适用于 Zotero Connector 的非官方助手：保存 PDF 和当前网页快照，保留文库、分类及标签功能。')
     manifest['action']['default_title']=manifest['name']
