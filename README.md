@@ -6,7 +6,7 @@
 
 ## 下载与安装
 
-**[下载安装包 ready.zip](https://github.com/BattleForever/zotero-connector-snapshot/releases/download/v0.2.0-rc.12/zotero-snapshot-v0.2.0-rc.12-ready.zip)**（约 1.3 MB，预发布版）
+**[下载安装包 ready.zip](https://github.com/BattleForever/zotero-connector-snapshot/releases/download/v0.2.0/zotero-snapshot-v0.2.0-ready.zip)**（约 1.3 MB）
 
 1. **完整解压**到准备长期保留的位置，双击 **先看这里.html**。
 2. 在 **Chrome 地址栏**输入 `chrome://extensions`，打开“开发者模式”，点击“加载已解压的扩展程序”，选择解压后的 **extension** 文件夹。安装后可将扩展固定到 **Chrome 工具栏**。
