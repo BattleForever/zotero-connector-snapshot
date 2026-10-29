@@ -27,7 +27,7 @@ def public_files():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--output', type=Path, default=ROOT / 'dist/zotero-connector-snapshot-0.2.0-rc.11-project-source.zip')
+    parser.add_argument('--output', type=Path, default=ROOT / 'dist/zotero-connector-snapshot-0.2.0-rc.12-project-source.zip')
     args = parser.parse_args()
     args.output.parent.mkdir(parents=True, exist_ok=True)
     hashes = {}
